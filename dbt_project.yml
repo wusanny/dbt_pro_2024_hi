@@ -40,3 +40,5 @@ models:
     +materialized: table
     model_bar:
       +schema: baller
+    model_dee:
+      +schema: king
