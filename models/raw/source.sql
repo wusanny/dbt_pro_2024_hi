@@ -1,0 +1,1 @@
+select * from {{ source ('raw','this_raw')}}
