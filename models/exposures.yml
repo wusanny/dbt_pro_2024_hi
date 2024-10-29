@@ -9,7 +9,7 @@ exposures:
       Did someone say "exponential growth"?
 
     depends_on:
-      - ref('potato')
+      - ref('bar')
 
     owner:
       name: Callum McData
