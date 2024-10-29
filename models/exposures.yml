@@ -2,7 +2,7 @@ version: 2
 
 exposures:
 
-  - name: weekly_jaffle_metrics
+  - name: jaffle_metrics
     label: Jaffles by the Week
     type: dashboard
     description: >
