@@ -1,7 +1,0 @@
-models:
-  - name: bar
-    columns:
-      - name: id
-        tests:
-          - unique
-          - not_null
