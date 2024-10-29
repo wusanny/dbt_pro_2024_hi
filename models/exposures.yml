@@ -1,0 +1,16 @@
+version: 2
+
+exposures:
+
+  - name: weekly_jaffle_metrics
+    label: Jaffles by the Week
+    type: dashboard
+    description: >
+      Did someone say "exponential growth"?
+
+    depends_on:
+      - ref('potato')
+
+    owner:
+      name: Callum McData
+      email: data@jaffleshop.com
