@@ -6,4 +6,16 @@ sources:
 
     tables:
       - name: customers # this is the table_name
+        columns:
+          - name: id
+            data_tests:
+              - unique:
+                  config:
+                    severity: "{{ 'warn' if target.name != 'prod' else 'error'}}"
       - name: orders
+        columns:
+          - name: id
+            data_tests:
+              - unique:
+                  config:
+                    severity: "{{ 'warn' if target.name != 'prod' else 'error'}}"
