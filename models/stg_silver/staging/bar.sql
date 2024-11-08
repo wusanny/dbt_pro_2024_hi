@@ -1,0 +1,1 @@
+select {{ cents_to_dollars('amount') }} as amount_usd  from {{ ref('foo') }}

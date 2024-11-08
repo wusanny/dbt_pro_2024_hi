@@ -1,0 +1,17 @@
+version: 2
+models:
+    - name:  funzies 
+      description: for fun
+ 
+      columns: 
+          - name: id
+            data_tests: 
+               - unique
+
+          - name: name
+            data_tests: 
+               - not_null 
+
+          - name: gender
+            data_tests: 
+               - not_null
