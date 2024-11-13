@@ -1,6 +1,6 @@
 with
 
-diff_source as (
+diff_sources as (
 
     select * from
 
@@ -18,4 +18,4 @@ diff_source as (
 
 )
 
-select * from diff_source
+select * from diff_sources
