@@ -1,0 +1,47 @@
+name: dbt Cloud CI Checku
+
+on:
+  pull_request:
+    branches:
+      - main  # Change if you use a different default branch
+
+jobs:
+  trigger-dbt-cloud:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger dbt Cloud CI Job
+        id: trigger
+        run: |
+          JOB_ID=752686
+          ACCOUNT_ID=186846
+          RESPONSE=$(curl -s -X POST "https://cloud.getdbt.com/api/v2/accounts/$ACCOUNT_ID/jobs/$JOB_ID/run/" \
+            -H "Authorization: Token ${{ secrets.DBT_CLOUD_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"cause": "Triggered by GitHub Actions CI on PR"}')
+          
+          RUN_ID=$(echo "$RESPONSE" | jq '.data.id')
+          echo "Triggered dbt Cloud run ID: $RUN_ID"
+          echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
+
+      - name: Wait for dbt Cloud Run to Complete
+        run: |
+          RUN_ID=${{ steps.trigger.outputs.run_id }}
+          ACCOUNT_ID=186846
+
+          STATUS="running"
+          while [[ "$STATUS" == "running" || "$STATUS" == "queued" ]]; do
+            echo "Checking status of run ID $RUN_ID..."
+            sleep 10
+            RESPONSE=$(curl -s -H "Authorization: Token ${{ secrets.DBT_CLOUD_API_TOKEN }}" \
+              "https://cloud.getdbt.com/api/v2/accounts/$ACCOUNT_ID/runs/$RUN_ID/")
+            STATUS=$(echo "$RESPONSE" | jq -r '.data.status_humanized' | tr '[:upper:]' '[:lower:]')
+            echo "Current status: $STATUS"
+          done
+
+          if [[ "$STATUS" != "success" ]]; then
+            echo "❌ dbt Cloud CI job failed with status: $STATUS"
+            exit 1
+          fi
+
+          echo "✅ dbt Cloud CI job completed successfully!"
